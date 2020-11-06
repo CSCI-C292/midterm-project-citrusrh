@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ElementScenes/Element.gd" type="Script" id=1]
+[ext_resource path="res://Assets/element icons/bottled_water.png" type="Texture" id=2]
+
+[node name="BottleWater" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Select" type="Button" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = -14.0
+margin_top = -28.0
+margin_right = 16.0
+margin_bottom = 24.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="bottled_water" type="Sprite" parent="."]
+position = Vector2( 0.0673714, -1.70309 )
+scale = Vector2( 1, 1.44595 )
+texture = ExtResource( 2 )
+[connection signal="pressed" from="Select" to="." method="_on_Select_pressed"]

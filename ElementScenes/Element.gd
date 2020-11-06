@@ -1,30 +1,33 @@
 extends Node2D
 
-export onready var elementName := ""
 onready var GameState = get_node("/root/GameState")
-onready var _selected := false
 var originalPosition = Vector2(0,0)
 
 func _ready():
-	GameState.elements += 1
-	if GameState.elements == 1:
-		self.position = Vector2(32,32)
-		originalPosition = self.position
-	else:
-		self.position = Vector2(32*GameState.elements,32)
-		originalPosition = self.position
-	#connect(elementName, GameState.unhideElement(""), "")
+	originalPosition = self.position
+	GameState.connect("unhideElement", self, "on_element_unhidden")
+	GameState.connect("originalPosition", self, "on_original_position")
 
 
 func _on_Select_pressed():
-	if _selected == false and GameState.elementsSelected < 2:
-		self._selected = true
-		GameState.elementsSelected += 1
-		if GameState.elementsSelected == 1:
-			self.position = Vector2(128,455)
-		elif GameState.elementsSelected == 2:
-			self.position = Vector2(384,455)
-	elif _selected == true:
-		self._selected = false
-		GameState.elementsSelected -= 1
+	if GameState.firstElement == "":
+		GameState.firstElement = self.name
+		self.position = Vector2(128,455)
+	elif not GameState.firstElement == self.name and GameState.secondElement == "":
+		GameState.secondElement = self.name
+		self.position = Vector2(384,455)
+	elif GameState.firstElement == self.name:
+		GameState.firstElement = ""
 		self.position = originalPosition
+	elif GameState.secondElement == self.name:
+		GameState.secondElement = ""
+		self.position = originalPosition
+		
+
+func on_element_unhidden(name):
+	if self.name == name:
+		self.visible = true
+		
+
+func on_original_position():
+	self.position = originalPosition
